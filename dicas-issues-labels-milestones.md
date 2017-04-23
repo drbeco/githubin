@@ -77,5 +77,5 @@ Bom trabalho!
 
 ---
 
-* Este _issue_ foi criado automaticamente. Após ler e resolver o que está acima detalhado, pode fechar. Se já fez as tarefas aqui descritas, desconsiderei-o e feche-o.
+* Este _issue_ foi criado automaticamente. Após ler e resolver o que está acima detalhado, pode fechar. Se já fez as tarefas aqui descritas, desconsidere-o e feche-o.
 
