@@ -23,8 +23,11 @@ To use the script and create the same issue in all three repositories you will n
 1. A file with all three sufixes, each one in one single line
 
 > **FILENAME: mysufixes.txt**
+
 > dandy
+
 > candy
+
 > landy
 
 2. A file with your API authenticantion token (defaults its names to AUTHTOKEN if not given)
@@ -48,8 +51,11 @@ and so on... with all your students' names. You will need:
 1. A file with all the students logins, one per line:
 
 > **FILENAME: mystudents.txt**
+
 > JohnDoe
+
 > MaryAnn
+
 > JackXen
 
 2. Your authenticantion file (AUTHTOKEN) with your token (keep it secret!)
@@ -80,6 +86,4 @@ Try -h for more help
 * Email: rcb@beco.cc
 * Date: 2017-04-22
 * License: GNU/GPL v2.0
-
-
 
