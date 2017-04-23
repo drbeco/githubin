@@ -47,13 +47,10 @@ and so on... with all your students' names. You will need:
 
 1. A file with all the students logins, one per line:
 
-> **FILENAME: mystudents.txt**
-
-> JohnDoe
-
-> MaryAnn
-
-> JackXen
+> **FILENAME: mystudents.txt**  
+> JohnDoe  
+> MaryAnn  
+> JackXen  
 
 2. Your authenticantion file (AUTHTOKEN) with your token (keep it secret!)
 
