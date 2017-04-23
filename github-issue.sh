@@ -28,7 +28,7 @@
 #
 # Usage:
 #
-#    $ github-issue.h -i "issue title" -b "issue body" -o "repo owner"
+#    $ github-issue.h -i {"issue title" | "issue-file.txt"} [-b "issue body"] -o "repo owner"
 #       -l "label" -m "milestone"
 #       -r "repo" OR -p "prefix-"
 #       -a "assignee" OR -s
@@ -42,7 +42,10 @@ Help()
     github-issue.sh - Creates a git issue on 
 
     Usage:
-    github-issue.sh [ -v... ] [ -h | -V | -n ] -i "Issue title" -b "The issue body goes here" -o "RepoOwner"
+    github-issue.sh [ -v... ] [ -h | -V | -n ] 
+                    -i { "Issue title" | "issue-file" }
+                    -o "RepoOwner"
+                    [ -b "The issue body goes here" ]
                     [ -l "label" ] [ -m "milestone" ]
                     { -r "SingleRepo" | -p "RepoPrefix-" }
                     [ -a "SingleAssignee" | -s ]
@@ -58,9 +61,9 @@ Help()
         -n, --dry-run    Just print the fields, but do not run.
 
       Mandatory:
-        -i, --issue      The issue title.
-        -b, --body       The issue body of message.
+        -i, --issue      The issue title or an issue-file. If a file is given, its content will be used as title (first line) and body.
         -o, --owner      Repository owner name (person or organization).
+        -b, --body       The issue body of message. If to -i is given a file, this option is not used.
 
         -r, --repo       Repository name.
         -p, --prefix     Repository has a prefix, and sufix comes from stdin (or redirected file). Not to be used with -r.
@@ -184,10 +187,32 @@ main()
                 ;;
         esac
     done
-  
-    # issue has title, body and repository owner
-    if [ -z "$issue" -o -z "$body" -o -z "$owner" ]; then
-        echo 'You must give: -i "issue title", -b "issue body" and -o "repository owner"'
+ 
+    # issue has title, or is it a file
+    if [ -z "$issue" ]; then
+        echo 'You must give -i "issue title" or -i "issue-filename.txt"'
+        echo 'For more help type: github-issue.sh -h'
+        exit 1
+    else
+        if [ -f "$issue" ]; then
+            title="$(head -1 $issue)"
+            body="$(tail -n+2 $issue | gawk '{printf "%s\\n", $0}' | gawk '{ gsub(/"/,"\\\"") } 1')"
+            #body1=`echo "$body0" | gawk '{printf "%s\\n", $0}'`
+        else
+            title="$issue"
+        fi
+    fi
+
+    # if there is no body, raise an error
+    if [ -z "$body" ]; then
+        echo 'You must give -b "The body of the issue"'
+        echo 'For more help type: github-issue.sh -h'
+        exit 1
+    fi
+
+    # repository owner
+    if [ -z "$owner" ]; then
+        echo 'You must give -o "repository owner"'
         echo 'For more help type: github-issue.sh -h'
         exit 1
     fi
@@ -270,7 +295,7 @@ main()
 
     #issue="" body="" label="" milestone="" owner="" repo="" prefix="" assignee="" asufix=0
    
-    head0="{\"title\":\"$issue\", \"body\":\"$body\", \"labels\":[\"$label\"]"
+    head0="{\"title\":\"$title\", \"body\":\"$body\", \"labels\":[\"$label\"]"
     if [ -n "$milestone" ]; then
         head="$head0, \"milestone\":\"$milestone\""
     else
