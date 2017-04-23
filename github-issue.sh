@@ -76,7 +76,10 @@ Help()
 
       Optionals:
         -l, --label      Label to attach (default "task").
-        -m, --milestone  The milestone number to associate.
+        -m, --milestone  The milestone number to associate. 
+                         If it doesn't exist:
+                            * for a single repository, the script will exit with error 1
+                            * for multiple repositories, the script will ignore the ones where the milestone doesn't exist and use it in the ones where it does exit.
 
         -a, --assignee   Associate all the issues with the same given user.
         -s, --sufix      Used with -p, given sufix is also the assignee. Not to be used with -a or -r.
@@ -197,6 +200,10 @@ main()
         echo Verbose level: $verbose
     fi
     
+    if [ "$dryrun" -eq 1 ]; then
+        echo "Dry-run: no data will be sent. If milestone is used, data will be sent just for asking if it exists."
+    fi
+
     #curl -u "$user:$tok"
     # -X POST -d 
     #    '{
@@ -326,6 +333,7 @@ main()
             echo
         fi
     fi
+    
 
     # Token from file or command line
     tokenfile=""
@@ -350,14 +358,33 @@ main()
         fi
     fi
 
+    #Check if the asked milestone exists
+    if [ -n "$milestone" ]; then
+        # single issue in a repo
+        if [ -n "$repo" ];  then
+            curl -u "${user}:${tok}" -i https://api.github.com/repos/"${owner}"/"${repo}"/milestones/"${milestone}" | grep "Status: 20[0-6]"
+            milexists=$?
+            if [ "$milexists" -eq 1 ]; then
+                echo "Milestone $milestone does not exist"
+                if [ "$dryrun" -eq 0 ]; then
+                    exit 1
+                fi
+            fi
+        fi
+    fi
+
     #issue="" body="" label="" milestone="" owner="" repo="" prefix="" assignee="" asufix=0
    
     head0="{\"title\":\"$title\", \"body\":\"$body\", \"labels\":[\"$label\"]"
+    headmile="$head0, \"milestone\":\"$milestone\""
     if [ -n "$milestone" ]; then
-        head="$head0, \"milestone\":\"$milestone\""
+        head="$headmile" #title, body, labels, milestone
     else
-        head="$head0"
+        head="$head0" #title, body, labels
     fi
+
+    # Debug
+    # set -x
 
     # single issue in a repo
     if [ -n "$repo" ];  then
@@ -375,7 +402,13 @@ main()
             echo curl -u \'"${user}:${tok}"\' -X POST -d \'"${field}"\' -i https://api.github.com/repos/"${owner}"/"${repo}"/issues
             echo
         else
-            curl -u "${user}:${tok}" -X POST -d "${field}" -i https://api.github.com/repos/"${owner}"/"${repo}"/issues
+            # run curl to create the issue
+            curl -u "${user}:${tok}" -X POST -d "${field}" -i https://api.github.com/repos/"${owner}"/"${repo}"/issues | grep "Status: 20[0-6]"
+            success=$?
+            if [ "$verbose" -gt 0 -a "$success" -eq 1 ]; then
+                echo "Error creating issue"
+                echo
+            fi
         fi
     else # read from file the suffix (may or may not be also the assignee)
         if [ "$verbose" -gt 1 ]; then
@@ -397,7 +430,23 @@ main()
                 echo curl -u \'"${user}:${tok}"\' -X POST -d \'"${field}"\' -i https://api.github.com/repos/"${owner}"/"${prefix}${suf}"/issues
                 echo
             else
-                curl -u "${user}:${tok}" -X POST -d "${field}" -i https://api.github.com/repos/"${owner}"/"${prefix}${suf}"/issues
+                # check milestone
+                if [ -n "$milestone" ]; then
+                    curl -u "${user}:${tok}" -i https://api.github.com/repos/"${owner}"/"${prefix}${suf}"/milestones/"${milestone}" | grep "Status: 20[0-6]"
+                    milexists=$?
+                    if [ "$milexists" -eq 1 ]; then
+                        echo "Milestone $milestone does not exist"
+                        field="$head0$theend" #head0 = title, body, labels
+                    fi
+                fi
+
+                # run curl to create the issue
+                curl -u "${user}:${tok}" -X POST -d "${field}" -i https://api.github.com/repos/"${owner}"/"${prefix}${suf}"/issues | grep "Status: 20[0-6]"
+                success=$?
+                if [ "$verbose" -gt 0 -a "$success" -eq 1 ]; then
+                    echo "Error creating issue"
+                    echo
+                fi
             fi
         done < "$file"
     fi
