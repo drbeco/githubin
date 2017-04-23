@@ -188,92 +188,8 @@ main()
         esac
     done
  
-    # issue has title, or is it a file
-    if [ -z "$issue" ]; then
-        echo 'You must give -i "issue title" or -i "issue-filename.txt"'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    else
-        if [ -f "$issue" ]; then
-            title="$(head -1 $issue)"
-            body="$(tail -n+2 $issue | gawk '{printf "%s\\n", $0}' | gawk '{ gsub(/"/,"\\\"") } 1')"
-            #body1=`echo "$body0" | gawk '{printf "%s\\n", $0}'`
-        else
-            title="$issue"
-        fi
-    fi
 
-    # if there is no body, raise an error
-    if [ -z "$body" ]; then
-        echo 'You must give -b "The body of the issue"'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-
-    # repository owner
-    if [ -z "$owner" ]; then
-        echo 'You must give -o "repository owner"'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-
-    # user is set
-    if [ -z "$user" ]; then
-        echo 'You must give the API github username -u "username"'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-
-    # Exclusive or: a repository name or a prefix to a repository name
-    if [ -z "$repo" -a -z "$prefix" -o -n "$repo" -a -n "$prefix" ]; then
-        echo 'Use one and only one of the two options -r and -p (i.e, give a repository name XOR a prefix)'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-
-    # assignee-sufix not with assignee or repo
-    if  [ -n "$assignee" -o -n "$repo" ] && [ "$asufix" -eq 1 ]; then
-        echo 'You must not use -s (assignee-sufix) togheter with -a (assignee) or -r (repo)'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-    
-    # File must be given if using -p
-    if [ ! -f "$file" -a -z "$repo" ]; then
-        echo 'Please provide -f "sufixes-file" to grab the sufixes when giving a -p "prefix"'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-
-    # File must NOT be given if using -r
-    if [ -n "$file" -a -n "$repo" ]; then
-        echo 'You can not use a -f "sufixes-file" when given the repository name with -r "repo"'
-        echo 'For more help type: github-issue.sh -h'
-        exit 1
-    fi
-
-    # Default labe="bug" and milestone="1"
-    if [ -z "$label" ]; then
-        label="task"
-    fi
-
-    # Token from file or command line
-    tokenfile=""
-    if [ -z "$token" ]; then
-        if [ -f ./AUTHTOKEN ]; then
-            tokenfile="./AUTHTOKEN"
-        fi
-    else
-        if [ -f "$token" ]; then
-            tokenfile="$token"
-        fi
-    fi
-    if [ -n "$tokenfile" ]; then
-        read tok <  "$tokenfile"
-    else
-        tok="$token"
-    fi
-
+    # verbose : the level of verbosity
     if [ "$verbose" -gt 0 ]; then
         echo Starting git-issue.sh script, by beco, version 20170422.163806...
     fi
@@ -292,6 +208,147 @@ main()
     #       "assignees":[{"login":"someuser"}]
     #     }' 
     # -i https://api.github.com/repos/drbeco/tgit/issues 
+    # issue has title, or is it a file
+    if [ -z "$issue" ]; then
+        echo 'You must give -i "issue title" or -i "issue-filename.txt"'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    else
+        if [ -f "$issue" ]; then
+            title="$(head -1 $issue)"
+            body="$(tail -n+2 $issue | gawk '{printf "%s\\n", $0}' | gawk '{ gsub(/"/,"\\\"") } 1')"
+            #body1=`echo "$body0" | gawk '{printf "%s\\n", $0}'`
+        else
+            title="$issue"
+        fi
+    fi
+
+    # if there is no body, raise an error
+    if [ -z "$body" ]; then
+        echo 'You must give -b "The body of the issue"'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+
+    # repository owner
+    if [ -z "$owner" ]; then
+        echo 'You must give -o "repository owner"'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+
+    # user is set
+    if [ -z "$user" ]; then
+        echo 'You must give the API github username -u "username"'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+
+    # Exclusive or: a repository name or a prefix to a repository name
+    if [ -z "$repo" -a -z "$prefix" -o -n "$repo" -a -n "$prefix" ]; then
+        echo 'Use one and only one of the two options -r and -p (i.e, give a repository name XOR a prefix)'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+
+    # assignee-sufix not with assignee or repo
+    if  [ -n "$assignee" -o -n "$repo" ] && [ "$asufix" -eq 1 ]; then
+        echo 'You must not use -s (assignee-sufix) togheter with -a (assignee) or -r (repo)'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+    #if [ "$verbose" -gt 1 ]; then
+    #echo "A single assignee for all repos: $assignee"
+    #fi
+    #if [ "$verbose" -gt 1 ]; then
+    #echo "Assignees are grabed from file"
+    #fi
+    
+    # File must be given if using -p
+    if [ ! -f "$file" -a -z "$repo" ]; then
+        echo 'Please provide -f "sufixes-file" to grab the sufixes when giving a -p "prefix"'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+
+    # File must NOT be given if using -r
+    if [ -n "$file" -a -n "$repo" ]; then
+        echo 'You can not use a -f "sufixes-file" when given the repository name with -r "repo"'
+        if [ "$verbose" -gt 0 ]; then
+            echo
+            Help
+        else
+            echo 'For more help type: github-issue.sh -h'
+        fi
+        exit 1
+    fi
+
+    # Default labe="bug" and milestone="1"
+    if [ -z "$label" ]; then
+        label="task"
+        if [ "$verbose" -gt 0 ]; then
+            echo "Using default label $label"
+            echo
+        fi
+    fi
+
+    # Token from file or command line
+    tokenfile=""
+    if [ -z "$token" ]; then
+        if [ -f ./AUTHTOKEN ]; then
+            tokenfile="./AUTHTOKEN"
+        fi
+    else
+        if [ -f "$token" ]; then
+            tokenfile="$token"
+        fi
+    fi
+    if [ -n "$tokenfile" ]; then
+        read tok <  "$tokenfile"
+        if [ "$verbose" -gt 1 ]; then
+            echo "Using token file $tokenfile"
+        fi
+    else
+        tok="$token"
+        if [ "$verbose" -gt 1 ]; then
+            echo "Using token $token"
+        fi
+    fi
 
     #issue="" body="" label="" milestone="" owner="" repo="" prefix="" assignee="" asufix=0
    
@@ -304,6 +361,10 @@ main()
 
     # single issue in a repo
     if [ -n "$repo" ];  then
+        if [ "$verbose" -gt 1 ]; then
+            echo "A single repo $repo will be used"
+            echo
+        fi
         if [ -n "$assignee" ]; then
             theend=", \"assignee\":\"$assignee\"}"
         else
@@ -311,11 +372,16 @@ main()
         fi
         field="$head$theend"
         if [ "$dryrun" -eq 1 ]; then
-            echo curl -u "$user:$tok" -X POST -d "$field" -i https://api.github.com/repos/"$owner"/"$repo"/issues
+            echo curl -u \'"${user}:${tok}"\' -X POST -d \'"${field}"\' -i https://api.github.com/repos/"${owner}"/"${repo}"/issues
+            echo
         else
-            curl -u "$user:$tok" -X POST -d "$field" -i https://api.github.com/repos/"$owner"/"$repo"/issues
+            curl -u "${user}:${tok}" -X POST -d "${field}" -i https://api.github.com/repos/"${owner}"/"${repo}"/issues
         fi
     else # read from file the suffix (may or may not be also the assignee)
+        if [ "$verbose" -gt 1 ]; then
+            echo "A list of repositories will be created with suffix read from file $file"
+            echo
+        fi
         while read suf; do            
             if [ -n "$assignee" ]; then
                 theend=", \"assignee\":\"$assignee\"}"
@@ -328,9 +394,10 @@ main()
             fi
             field="$head$theend"
             if [ "$dryrun" -eq 1 ]; then
-                echo curl -u "$user:$tok" -X POST -d "$field" -i https://api.github.com/repos/"$owner"/"$prefix$suf"/issues
+                echo curl -u \'"${user}:${tok}"\' -X POST -d \'"${field}"\' -i https://api.github.com/repos/"${owner}"/"${prefix}${suf}"/issues
+                echo
             else
-                curl -u "$user:$tok" -X POST -d "$field" -i https://api.github.com/repos/"$owner"/"$prefix$suf"/issues
+                curl -u "${user}:${tok}" -X POST -d "${field}" -i https://api.github.com/repos/"${owner}"/"${prefix}${suf}"/issues
             fi
         done < "$file"
     fi
