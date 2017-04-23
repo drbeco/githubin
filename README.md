@@ -22,13 +22,10 @@ To use the script and create the same issue in all three repositories you will n
 
 1. A file with all three sufixes, each one in one single line
 
-> **FILENAME: mysufixes.txt**
-
-> dandy
-
-> candy
-
-> landy
+> **FILENAME: mysufixes.txt**  
+> dandy  
+> candy  
+> landy  
 
 2. A file with your API authenticantion token (defaults its names to AUTHTOKEN if not given)
 
