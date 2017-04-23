@@ -34,8 +34,8 @@
 #       -a "assignee" OR -s
 #       -f ./github-sufixes.txt
 #       -u "login" -t {"token" | "tokenfile"}
-#
 
+# The help function and usage examples
 Help()
 {
     cat << EOF
@@ -100,9 +100,8 @@ Help()
 EOF
     exit 1
 }
-# Another usage function example
-# usage() { echo "Usage: $0 [-h | -c] | [-a n -i m], being n>m" 1>&2; exit 1; }
 
+# Show copyright information and version
 Copyr()
 {
     echo 'git-issue.sh - 20160908.175403'
@@ -115,9 +114,12 @@ Copyr()
     exit 1
 }
 
-# Example of a function
+# The main function process args and creates issues
 main()
 {
+    # Debug
+    # set -x
+    
     verbose=0
     issue=""
     body=""
@@ -215,6 +217,8 @@ main()
     #       "assignees":[{"login":"someuser"}]
     #     }' 
     # -i https://api.github.com/repos/drbeco/tgit/issues 
+    
+
     # issue has title, or is it a file
     if [ -z "$issue" ]; then
         echo 'You must give -i "issue title" or -i "issue-filename.txt"'
@@ -229,7 +233,6 @@ main()
         if [ -f "$issue" ]; then
             title="$(head -1 $issue)"
             body="$(tail -n+2 $issue | gawk '{printf "%s\\n", $0}' | gawk '{ gsub(/"/,"\\\"") } 1')"
-            #body1=`echo "$body0" | gawk '{printf "%s\\n", $0}'`
         else
             title="$issue"
         fi
@@ -294,13 +297,7 @@ main()
         fi
         exit 1
     fi
-    #if [ "$verbose" -gt 1 ]; then
-    #echo "A single assignee for all repos: $assignee"
-    #fi
-    #if [ "$verbose" -gt 1 ]; then
-    #echo "Assignees are grabed from file"
-    #fi
-    
+
     # File must be given if using -p
     if [ ! -f "$file" -a -z "$repo" ]; then
         echo 'Please provide -f "sufixes-file" to grab the sufixes when giving a -p "prefix"'
@@ -325,7 +322,7 @@ main()
         exit 1
     fi
 
-    # Default labe="bug" and milestone="1"
+    # Default label="task"
     if [ -z "$label" ]; then
         label="task"
         if [ "$verbose" -gt 0 ]; then
@@ -333,7 +330,6 @@ main()
             echo
         fi
     fi
-    
 
     # Token from file or command line
     tokenfile=""
@@ -360,7 +356,7 @@ main()
 
     #Check if the asked milestone exists
     if [ -n "$milestone" ]; then
-        # single issue in a repo
+        # single i
         if [ -n "$repo" ];  then
             curl -u "${user}:${tok}" -i https://api.github.com/repos/"${owner}"/"${repo}"/milestones/"${milestone}" | grep "Status: 20[0-6]"
             milexists=$?
@@ -374,7 +370,8 @@ main()
     fi
 
     #issue="" body="" label="" milestone="" owner="" repo="" prefix="" assignee="" asufix=0
-   
+    #TODO: report back all variables in level 3 verbosity
+
     head0="{\"title\":\"$title\", \"body\":\"$body\", \"labels\":[\"$label\"]"
     headmile="$head0, \"milestone\":\"$milestone\""
     if [ -n "$milestone" ]; then
