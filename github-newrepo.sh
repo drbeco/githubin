@@ -45,16 +45,17 @@ Help()
 {
     cat << EOF
     ${0} - Creates a git repository
-    Usage: ${0} [-v] ( [-h|-V] | [-f|[-g]] -r reponame -u username)
+    Usage: ${0} [-h|-V] | [-v...] {-f|-g} -r reponame -u username  -t { "token" | "tokenfile" }
   
     Options:
       -h, --help       Show this help.
       -V, --version    Show version.
       -v, --verbose    Turn verbose mode on (cumulative).
       -f, --faculty    Uses Faculty/University template.
-      -g, --general    Uses general template (default).
+      -g, --general    Uses general template.
       -r, --repo       Repository (directory) name.
       -u, --user       Your Github username.
+      -t, --token      Your token or a file with it (defaults to AUTHTOKEN file).
 
     Exit status:
        0, if ok.
@@ -90,9 +91,10 @@ main()
     verbose=0
     faculty=0
     general=0
+    token=""
     #getopt example with switch/case
-    while getopts "hVvfgr:u:" FLAG; do
-        case $FLAG in
+    while getopts "hVvfgr:u:t:" FLAG; do
+        case "${FLAG}" in
             h)
                 Help
                 ;;
@@ -109,47 +111,72 @@ main()
                 general=1
                 ;;
             r)
-                repo=$OPTARG
+                repo="${OPTARG}"
                 ;;
             u)
-                user=$OPTARG
+                user="${OPTARG}"
                 ;;
+            t)
+                token="${OPTARG}"
             *)
                 Help
                 ;;
         esac
     done
   
-    if [ $faculty -eq $general ]; then
+    if [ "$faculty" -eq "$general" ]; then
         echo 'Error: use one and only one of -f or -g, they are mutually exclusive.'
         echo
         Help
     fi
 
-    if [ $faculty -eq 1 ]; then
-        srcfrom='/home/beco/bin/exgit-template/university/'
+    if [ "$faculty" -eq 1 ]; then
+        srcfrom='./newrepo-template/university/'
     else
-        srcfrom='/home/beco/bin/exgit-template/general/'
-        echo 'Sorry, not implemented yet.'
-        exit 1
+        srcfrom='./newrepo-template/general/'
     fi
 
-    if [ -z $user -o -z $repo ]; then
+    if [ -z "$user" -o -z "$repo" ]; then
         echo You must give -u user_name and -r repository_name
         echo
         Help
     fi
   
-    if [ $verbose -gt 0 ]; then
-        echo Starting git-repo.sh script, by beco, version 20160908.175403...
+    if [ "$verbose" -gt 0 ]; then
+        echo Starting "${0}" script, by beco, version 20170504.222818...
     fi
-    if [ $verbose -gt 1 ]; then
-        echo Verbose level: $verbose
+    if [ "$verbose" -gt 1 ]; then
+        echo Verbose level: "$verbose"
     fi
   
-    echo 'Creating folder ' $repo
-    mkdir $repo
-    cd $repo
+    # Token from file or command line
+    tokenfile=""
+    if [ -z "$token" ]; then
+        if [ -f ./AUTHTOKEN ]; then
+            tokenfile="./AUTHTOKEN"
+        fi  
+    else
+        if [ -f "$token" ]; then
+            tokenfile="$token"
+        fi  
+    fi  
+    if [ -n "$tokenfile" ]; then
+        read tok <  "$tokenfile"
+        if [ "$verbose" -gt 1 ]; then
+            echo "Using token file $tokenfile"
+        fi  
+    else
+        tok="$token"
+        if [ "$verbose" -gt 1 ]; then
+            echo "Using token $token"
+        fi  
+    fi  
+
+    # ------------------------------------------------------------
+
+    echo "Creating folder $repo"
+    mkdir "$repo"
+    cd "$repo"
 
     echo 'Initializing repo: git init'
     git init
@@ -170,18 +197,18 @@ main()
     
     echo 'Adding, commiting and pushing'
     git add .
-    git commit -m "First commit: imported by git-repo.sh"
+    git commit -m "First commit: imported by ${0} using ${srcfrom}"
 
     echo "Creating remote repository at Github $user/$repo.git"
     if [ "$user" == "drbeco" ]; then
         echo User
-        curl -u "$user:d6643d2e906cd4e1dd5ab6283dbe0ff726906fad" https://api.github.com/user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
+        curl -u "${user}:${tok}" https://api.github.com/user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
     else
         echo Organization
-        curl -u "$user:d6643d2e906cd4e1dd5ab6283dbe0ff726906fad" https://api.github.com/orgs/$user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
+        curl -u "${user}:${tok}" https://api.github.com/orgs/$user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
     fi
 
-    #user="drbeco:d6643d2e906cd4e1dd5ab6283dbe0ff726906fad" ; repo="t3test" ; 
+    #user="drbeco:${tok}" ; repo="t3test" ; 
     #curl -u "$user" https://api.github.com/user/repos -d "{\"name\":\"$repo\"}"
 
     echo 'Pushing to the remote GitHub repository'
