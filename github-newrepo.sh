@@ -118,22 +118,24 @@ main()
                 ;;
             t)
                 token="${OPTARG}"
+                ;;
             *)
                 Help
                 ;;
         esac
     done
-  
+
     if [ "$faculty" -eq "$general" ]; then
         echo 'Error: use one and only one of -f or -g, they are mutually exclusive.'
         echo
         Help
     fi
 
+    dirroot=`dirname ${0}`
     if [ "$faculty" -eq 1 ]; then
-        srcfrom='./newrepo-template/university/'
+        srcfrom="${dirroot}/newrepo-template/university"
     else
-        srcfrom='./newrepo-template/general/'
+        srcfrom="${dirroot}/newrepo-template/general"
     fi
 
     if [ -z "$user" -o -z "$repo" ]; then
