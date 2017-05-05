@@ -30,6 +30,7 @@
 
 # Debug files
 *.dSYM/
+*.orig
 
 # Secret files
 MYTOKEN
