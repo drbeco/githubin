@@ -39,18 +39,18 @@
 Help()
 {
     cat << EOF
-    github-issue.sh - Creates a git issue on 
+    ${0} - Creates git issues on various repositories at once
 
     Usage:
-    github-issue.sh [ -v... ] [ -h | -V | -n ] 
-                    -i { "Issue title" | "issue-file" }
-                    -o "RepoOwner"
-                    [ -b "The issue body goes here" ]
-                    [ -l "label" ] [ -m "milestone" ]
-                    { -r "SingleRepo" | -p "RepoPrefix-" }
-                    [ -a "SingleAssignee" | -s ]
-                    {[ -f ./github-sufixes.txt ]}
-                    -u "login" -t { "token" | "tokenfile" }
+    ${0}   [ -v... ] [ -h | -V | -n ] 
+                        -i { "Issue title" | "issue-file" }
+                        -o "RepoOwner"
+                        [ -b "The issue body goes here" ]
+                        { -r "SingleRepo" | -p "RepoPrefix-" }
+                        {[ -f ./github-sufixes.txt ]}
+                        -u "login" -t { "token" | "tokenfile" }
+                        [ -l "label" ] [ -m "milestone" ]
+                        [ -a "SingleAssignee" | -s ]
 
     Options:
     
@@ -75,16 +75,15 @@ Help()
         -u, --user       The user that will run the API.
 
       Optionals:
+        -t, --token      The user's API authentication token or a file containing the token. If not given, the script will look into AUTHTOKEN file. If it is given as a filename, the script will get the token from it. If the file doesn't exist, the script will understand that the given string is the actual token.
         -l, --label      Label to attach (default "task").
         -m, --milestone  The milestone number to associate. 
                          If it doesn't exist:
                             * for a single repository, the script will exit with error 1
                             * for multiple repositories, the script will ignore the ones where the milestone doesn't exist and use it in the ones where it does exit.
-
         -a, --assignee   Associate all the issues with the same given user.
         -s, --sufix      Used with -p, given sufix is also the assignee. Not to be used with -a or -r.
 
-        -t, --token      The user's API authentication token or a file containing the token. If not given, the script will look into AUTHTOKEN file. If it is given as a filename, the script will get the token from it. If the file doesn't exist, the script will understand that the given string is the actual token.
 
     Exit status:
        0, if ok.
