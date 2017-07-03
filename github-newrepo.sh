@@ -20,7 +20,7 @@
 ### END INIT INFO
 
 # **************************************************************************
-# * (C)opyright 2016         by Ruben Carlo Benante                        *
+# * (C)opyright 2016-2017         by Ruben Carlo Benante                   *
 # *                                                                        *
 # * This program is free software; you can redistribute it and/or modify   *
 # *  it under the terms of the GNU General Public License as published by  *
@@ -195,7 +195,8 @@ main()
     cp -- "$srcfrom/github/"* .github/
 
     echo 'Creating tags'
-    make tags > /dev/null
+    ctags -R
+    #make tags > /dev/null
     
     echo 'Adding, commiting and pushing'
     git add .
