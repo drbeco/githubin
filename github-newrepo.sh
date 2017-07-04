@@ -211,6 +211,21 @@ main()
         curl -u "${user}:${tok}" https://api.github.com/orgs/$user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
     fi
 
+    created=$?
+
+    if [ "${created}" == "1" ]; then
+        echo "Could not create remote repository."
+        echo "Please do it manually: create repository, add master and develop branchs and push the current working directory."
+        echo "0> At github site, choose create new repository $repo"
+        echo "1>$ git add origin git@github.com:$user/$repo.git"
+        echo "2>$ git push -u origin master"
+        echo "3>$ git co -b develop"
+        echo "4>$ git push -u origin develop"
+        echo
+        echo "Program aborting."
+        exit 1
+    fi
+
     #user="drbeco:${tok}" ; repo="t3test" ; 
     #curl -u "$user" https://api.github.com/user/repos -d "{\"name\":\"$repo\"}"
 
