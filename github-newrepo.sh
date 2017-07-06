@@ -191,7 +191,7 @@ main()
     mv -- gitignore .gitignore
     #TODO .gitattributes
     
-    echo 'Copying .github files (guidelines)'
+    echo 'Copying .github files (guidelines) CODE-OF-CONDUCT, CONTRIBUTING, ISSUE_TEMPLATE, PULL_REQUEST_TEMPLATE'
     mkdir .github
     cp -- "$srcfrom/github/"* .github/
 
