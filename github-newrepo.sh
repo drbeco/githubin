@@ -189,6 +189,7 @@ main()
     echo 'Copying exN.c, exN.h and .gitignore'
     cp -- "$srcfrom/c/"* .
     mv -- gitignore .gitignore
+    #TODO .gitattributes
     
     echo 'Copying .github files (guidelines)'
     mkdir .github
