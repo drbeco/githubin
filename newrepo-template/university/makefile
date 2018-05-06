@@ -1,5 +1,5 @@
 #***************************************************************************
-#*   Autoversion makefile                     v.20170506.205016   (-O0%-s) *
+#*   Autoversion makefile                     v.20170112.001402   (euler)  *
 #*   Copyright (C) 2014-2017 by Ruben Carlo Benante <rcb@beco.cc>          *
 #*                                                                         *
 #*   This makefile sets BUILD and allows to set MAJOR.MINOR version,       *
@@ -118,41 +118,71 @@ MAKEFLAGS += --no-builtin-rules
 .PRECIOUS: %.o
 SHELL=/bin/bash -o pipefail
 
+# asure functions that return values are not ignored
 FORTIFY ?= 1
+# turn on/off debug mode
 DEBUG ?= 1
+# version major number
 MAJOR ?= 0
+# version minor number
 MINOR ?= 1
+# object files to compile with the source
 OBJ ?=
+# other source files to be compiled together
 SRC ?=
+# colorize output
 CCCOLOR ?= always
+# create a define
 D ?= D_
+# project Euler exercise number
+N ?= 0
+PENAME := $(shell printf '%-8s' pe$(N).c)
+# build date
 BUILD = $(shell date +"%g%m%d.%H%M%S")
+# build date inside binary code
 DEFSYM = $(subst .,_,$(BUILD))
+# automatic version number
 VERSION = "\"$(MAJOR).$(MINOR).$(BUILD)\""
+# c compiler
 CC = gcc
+# brainforce compiler
 BF = bf
+# gportugol compiler
 PT = gpt
+# prolog linker
 PLLD = swipl-ld
+# prolog compiler
 PL = swipl
+# c flags for the c compiler
 CFLAGS = -Wall -Wextra -std=gnu99 -fdiagnostics-color=$(CCCOLOR)
 #CFLAGS = -Wall -Wextra -g -O0 -std=gnu99 -pg -fprofile-arcs -fdiagnostics-color=$(CCCOLOR)
 ifeq "$(DEBUG)" "0"
+# not a debug, go fast
 CFLAGS += -Ofast
 else ifeq "$(DEBUG)" "1"
+# it is a debug, add symbols and no optimizations
 CFLAGS += -g -O0
 else
+# exaustive debug
 CFLAGS += -g -O0 -pg -fprofile-arcs -ansi -Wpedantic
 endif
 #-pedantic-errors -Werror
 #-Ofast -c
+# pre-processor flags
 CPPFLAGS = -DVERSION=$(VERSION) -DBUILD="\"$(BUILD)\"" -DDEBUG=$(DEBUG) -D$(D) -D_FORTIFY_SOURCE=$(FORTIFY)
 ifeq "$(DEBUG)" "2"
-CPPFLAGS += -D_XOPEN_SOURCE=700 
+# POSIX extra stuff
+CPPFLAGS += -D_XOPEN_SOURCE=700
 endif
-LDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
+# libraries to link, options to the linker
+LDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl -lgmp
+# making a shared library
 CCSHARED = -shared -fPIC
+# brainforce options
 BFFLAGS = -i on -p both -r on -w on
+# making a prolog shared library
 PLLDSHARED = -shared
+# making a stand alone prolog program
 PLFLAGS = --goal=main --stand_alone=true
 
 # prevent built-in rules for %.o
@@ -232,6 +262,13 @@ copy :
 tags :
 	ctags -R
 	ctags -R -x | less -F
+
+# Gera um novo peN
+euler :
+	@cp -i peN.c pe$(N).c
+	@sed -i 's/PEN.c   /$(PENAME)/' pe$(N).c
+	@sed -i 's/PEN pe ## N/PEN pe ## $(N)/' pe$(N).c
+	@echo "pe$(N).c"
 
 #* ------------------------------------------------------------------- *
 #* makefile config for Vim modeline                                    *
