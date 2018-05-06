@@ -31,4 +31,9 @@
 # Debug and misc files
 *.dSYM/
 *.orig
+*.log
+
+# Translations
+*.mo
+*.pot
 
