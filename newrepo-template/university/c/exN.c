@@ -2,7 +2,7 @@
  *   exN.c                                    Version 20160908.182830      *
  *                                                                         *
  *   Brief description                                                     *
- *   Copyright (C) 2016         by Ruben Carlo Benante                     *
+ *   Copyright (C) 2016-2018    by Ruben Carlo Benante                     *
  ***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
