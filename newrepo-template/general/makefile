@@ -1,6 +1,6 @@
 #***************************************************************************
-#*   Autoversion makefile                     v.20170112.001402   (euler)  *
-#*   Copyright (C) 2014-2017 by Ruben Carlo Benante <rcb@beco.cc>          *
+#*   Autoversion makefile                     v.20180620.225030   (euler1) *
+#*   Copyright (C) 2014-2018 by Ruben Carlo Benante <rcb@beco.cc>          *
 #*                                                                         *
 #*   This makefile sets BUILD and allows to set MAJOR.MINOR version,       *
 #*   DEBUG and OBJ to compile a range of different targets                 *
@@ -52,6 +52,11 @@
 #	     $ make ex1.bf.x
 #	 - Portugol:
 #	 	 $ make ex1.gpt.x
+#	 - Project Euler:
+#	     + Create a new template, say, number pe42.c:
+#	         $ make euler N=42
+#	     + Compile pe42.c with:
+#		     $ make pe42.x SRC=projecteuler.c
 #
 # * Directly from vim editor command line:
 #    - Normal C program (ex1.c)
@@ -110,6 +115,8 @@
 # 		* added _FORTIFY_SOURCE=1 to help catch overflows
 # 2017-03-18:
 # 		* added -lcurl to link with libcurl
+# 2018-06-20:
+# 		* added help about euler, and echo how to compile
 
 # disable builtin rules with MAKEFLAGS and .SUFFIXES
 MAKEFLAGS += --no-builtin-rules
@@ -268,7 +275,10 @@ euler :
 	@cp -i peN.c pe$(N).c
 	@sed -i 's/PEN.c   /$(PENAME)/' pe$(N).c
 	@sed -i 's/PEN pe ## N/PEN pe ## $(N)/' pe$(N).c
-	@echo "pe$(N).c"
+	@sed -i 's/Proj. Euler problem #PEN/Proj. Euler problem #$(N)/' pe$(N).c
+	@echo "Created ....... : pe$(N).c"
+	@echo "Compile with .. : make pe$(N).x SRC=projecteuler.c"
+	@echo '................: Good luck!'
 
 #* ------------------------------------------------------------------- *
 #* makefile config for Vim modeline                                    *

@@ -28,7 +28,23 @@
 *.x86_64
 *.hex
 
-# Debug and misc files
+# Debug, profile-arcs and misc files
 *.dSYM/
 *.orig
+*.err
+*.gcda
+*.log
+
+# Swap, session, backup files and alike
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+Session.vim
+*.~
+*.bkp
+
+# Translations
+*.mo
+*.pot
 
