@@ -1,31 +1,31 @@
-/***************************************************************************
- *   exN.h                                    Version 20160908.182854      *
- *                                                                         *
- *   Brief description                                                     *
- *   Copyright (C) 2016         by Ruben Carlo Benante                     *
- ***************************************************************************
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License.        *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************
- *   To contact the author, please write to:                               *
- *   Ruben Carlo Benante                                                   *
- *   Email: rcb@beco.cc                                                    *
- *   Webpage: www.beco.cc                                                  *
- *   Phone: +55 (81) 3184-7555                                             *
- ***************************************************************************/
+/*****************************************************************************
+ *   exN.h                                    Version 20180714.101818        *
+ *                                                                           *
+ *   Brief description                                                       *
+ *   Copyright (C) 2016-2018    by Ruben Carlo Benante                       *
+ *****************************************************************************
+ *   This program is free software; you can redistribute it and/or modify    *
+ *   it under the terms of the GNU General Public License as published by    *
+ *   the Free Software Foundation; either version 2 of the License.          *
+ *                                                                           *
+ *   This program is distributed in the hope that it will be useful,         *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+ *   GNU General Public License for more details.                            *
+ *                                                                           *
+ *   You should have received a copy of the GNU General Public License       *
+ *   along with this program; if not, write to the                           *
+ *   Free Software Foundation, Inc.,                                         *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.               *
+ *****************************************************************************
+ *   To contact the author, please write to:                                 *
+ *   Ruben Carlo Benante                                                     *
+ *   Email: rcb@beco.cc                                                      *
+ *   Webpage: www.beco.cc                                                    *
+ *   Phone: +55 (81) 3184-7555                                               *
+ *****************************************************************************/
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /**
  * \file exN.h
  * \ingroup GroupUnique
@@ -61,7 +61,7 @@
 #ifndef _EXN_H
 #define _EXN_H
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /* includes */
 
 /* #include <stdio.h> */ /* Standard I/O functions */
@@ -94,7 +94,7 @@
 /* #include "libeco.h" */ /* I/O, Math, Sound, Color, Portable Linux/Windows */
 /* #include "exN.h" */ /* To be created for this template if needed */
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /* definitions */
 
 #ifndef VERSION /* gcc -DVERSION="0.1.160612.142628" */
@@ -117,12 +117,12 @@
 /* limits */
 #define SBUFF 256 /**< String buffer */
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /* globals */
 
 static int verb = 0; /**< verbose level, global within the file */
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /* prototypes */
 
 void help(void); /**< Prints help information and exit */
@@ -131,7 +131,7 @@ void exN_init(void);  /**< Initializes some operations before start */
 
 #endif /* NOT def _EXN_H */
 
-/* ---------------------------------------------------------------------- */
-/* vi: set ai et ts=4 sw=4 tw=0 wm=0 fo=croql : C config for Vim modeline */
-/* Template by Dr. Beco <rcb at beco dot cc> Version 20160615.020326      */
+/* ------------------------------------------------------------------------- */
+/* vi: set ai et ts=4 sw=4 tw=0 wm=0 fo=croql : C config for Vim modeline    */
+/* Template by Dr. Beco <rcb at beco dot cc>       Version 20180716.101436   */
 

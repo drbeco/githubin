@@ -1,31 +1,31 @@
-/***************************************************************************
- *   exN.c                                    Version 20160908.182830      *
- *                                                                         *
- *   Brief description                                                     *
- *   Copyright (C) 2016         by Ruben Carlo Benante                     *
- ***************************************************************************
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; version 2 of the License.               *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************
- *   To contact the author, please write to:                               *
- *   Ruben Carlo Benante                                                   *
- *   Email: rcb@beco.cc                                                    *
- *   Webpage: http://www.beco.cc                                           *
- *   Phone: +55 (81) 3184-7555                                             *
- ***************************************************************************/
+/*****************************************************************************
+ *   exN.c                                    Version 20180714.101818        *
+ *                                                                           *
+ *   Brief description                                                       *
+ *   Copyright (C) 2016-2018    by Ruben Carlo Benante                       *
+ *****************************************************************************
+ *   This program is free software; you can redistribute it and/or modify    *
+ *   it under the terms of the GNU General Public License as published by    *
+ *   the Free Software Foundation; either version 2 of the License.          *
+ *                                                                           *
+ *   This program is distributed in the hope that it will be useful,         *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+ *   GNU General Public License for more details.                            *
+ *                                                                           *
+ *   You should have received a copy of the GNU General Public License       *
+ *   along with this program; if not, write to the                           *
+ *   Free Software Foundation, Inc.,                                         *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.               *
+ *****************************************************************************
+ *   To contact the author, please write to:                                 *
+ *   Ruben Carlo Benante                                                     *
+ *   Email: rcb@beco.cc                                                      *
+ *   Webpage: www.beco.cc                                                    *
+ *   Phone: +55 (81) 3184-7555                                               *
+ *****************************************************************************/
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /**
  * @file exN.c
  * @ingroup GroupUnique
@@ -76,7 +76,7 @@
  *      $astlye -A1 -s4 -k3 -xj -SCNeUpv exN.c
  */
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /* includes */
 
 #include <stdio.h> /* Standard I/O functions */
@@ -109,7 +109,7 @@
 /* #include <locale.h> */ /* MACROS LC_ for location specific settings */
 /* #include "libeco.h" */ /* I/O, Math, Sound, Color, Portable Linux/Windows */
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /**
  * @ingroup GroupUnique
  * @brief This is the main event of the evening
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
 
 /* Write your functions here... */
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /**
  * @ingroup GroupUnique
  * @brief Prints help information and exit
@@ -213,7 +213,7 @@ void help(void)
     exit(EXIT_FAILURE);
 }
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /**
  * @ingroup GroupUnique
  * @brief Prints version and copyright information and exit
@@ -233,7 +233,7 @@ void copyr(void)
     exit(EXIT_FAILURE);
 }
 
-/* ---------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
 /**
  * @ingroup GroupUnique
  * @brief This function initializes some operations before start
@@ -282,7 +282,6 @@ void exN_init(void)
 }
 
 /* ------------------------------------------------------------------------- */
-/* C config for Vim modeline                                                 */
-/* vi: set ai cin et ts=8 sts=4 sw=4 tw=79 wm=0 cc=+1 lbr fo=croq :          */
-/* Template by Dr. Beco <rcb at beco dot cc>       Version 20170724.223312   */
+/* vi: set ai et ts=4 sw=4 tw=0 wm=0 fo=croql : C config for Vim modeline    */
+/* Template by Dr. Beco <rcb at beco dot cc>       Version 20180716.101436   */
 
