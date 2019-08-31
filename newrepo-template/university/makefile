@@ -1,6 +1,6 @@
 #***************************************************************************
-#*   Autoversion makefile                     v.20180620.225030   (euler1) *
-#*   Copyright (C) 2014-2018 by Ruben Carlo Benante <rcb@beco.cc>          *
+#*   Autoversion makefile                     v.20190817.232914   (euler4) *
+#*   Copyright (C) 2014-2019 by Ruben Carlo Benante <rcb@beco.cc>          *
 #*                                                                         *
 #*   This makefile sets BUILD and allows to set MAJOR.MINOR version,       *
 #*   DEBUG and OBJ to compile a range of different targets                 *
@@ -54,9 +54,9 @@
 #	 	 $ make ex1.gpt.x
 #	 - Project Euler:
 #	     + Create a new template, say, number pe42.c:
-#	         $ make euler N=42
+#	         $ make pe42.c
 #	     + Compile pe42.c with:
-#		     $ make pe42.x SRC=projecteuler.c
+#		     $ make pe42.x SRC="projecteuler.c myeulerlib.c"
 #
 # * Directly from vim editor command line:
 #    - Normal C program (ex1.c)
@@ -99,6 +99,17 @@
 # 		$ make wipe
 #
 # Log:
+# 2019-08-17:
+# 		* Now separated projecteuler lib from userlib
+# 		    - make pe42.x SRC="projecteuler.c myeulerlib.c"
+# 2019-03-25:
+# 		* To create a source template for Project Euler now uses:
+# 			- make pe42.c
+# 		* And to compile:
+# 			- make pe42.x SRC=projecteuler.c
+# 		* Added target .SECONDARY to avoid deleting pe42.c
+# 2018-07-25:
+# 		* Generates BUILD when compiled with errors and VERSION when clean compiled
 # 2017-03-03:
 # 		* added -fdiagnostics-color=always to colorize tee output
 # 		* added -pg -fprofile-arcs to allow gprof command on debug
@@ -123,6 +134,7 @@ MAKEFLAGS += --no-builtin-rules
 #.SUFFIXES:
 .PHONY: clean wipe nomatch
 .PRECIOUS: %.o
+.SECONDARY:
 SHELL=/bin/bash -o pipefail
 
 # asure functions that return values are not ignored
@@ -142,8 +154,8 @@ CCCOLOR ?= always
 # create a define
 D ?= D_
 # project Euler exercise number
-N ?= 0
-PENAME := $(shell printf '%-8s' pe$(N).c)
+# N ?= 0
+# PENAME := $(shell printf '%-8s' pe$(N).c)
 # build date
 BUILD = $(shell date +"%g%m%d.%H%M%S")
 # build date inside binary code
@@ -226,19 +238,20 @@ endif
 # Inclui VERSION, data de BUILD e DEBUG (opcional).
 %.x : %.c $(OBJ) $(SRC)
 	-$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
+	@#@echo $@ version $(VERSION) > VERSION
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
 endif
-	-@[ ! -s errors.err ] && echo $@ version $(VERSION) > VERSION
+	-@[ ! -s errors.err ] && echo "$@ version "$(VERSION) > VERSION && cp VERSION BUILD || echo "$@ build "$(VERSION) > BUILD
 
 # override built-in rules for mathing everything (exactly the same rule as %.x above)
 % : %.c $(OBJ) $(SRC)
 	-$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
-	@echo $@ version $(VERSION) > VERSION
+	@#@echo $@ version $(VERSION) > VERSION
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
 endif
-	-@[ ! -s errors.err ] && echo $@ version $(VERSION) > VERSION
+	-@[ ! -s errors.err ] && echo "$@ version "$(VERSION) > VERSION && cp VERSION BUILD || echo "$@ build "$(VERSION) > BUILD
 
 nomatch :
 	@echo 'makefile error: no rules for the given goal(s)' $(warning nomatch)
@@ -270,14 +283,21 @@ tags :
 	ctags -R
 	ctags -R -x | less -F
 
-# Gera um novo peN
-euler :
-	@cp -i peN.c pe$(N).c
-	@sed -i 's/PEN.c   /$(PENAME)/' pe$(N).c
-	@sed -i 's/PEN pe ## N/PEN pe ## $(N)/' pe$(N).c
-	@sed -i 's/Proj. Euler problem #PEN/Proj. Euler problem #$(N)/' pe$(N).c
-	@echo "Created ....... : pe$(N).c"
-	@echo "Compile with .. : make pe$(N).x SRC=projecteuler.c"
+# Gera um novo template peN.c para Project Euler, questao N
+pe%.c :
+	@if [[ -s "pe$(*).c" ]] ; then \
+	echo Found source code pe$(*).c ; \
+	else \
+	cp -i peN.c pe$(*).c ; \
+	sed -i 's/PEN.c   /$(shell printf '%-8s' pe$(*).c)/' pe$(*).c ; \
+	sed -i 's/PEN pe ## N/PEN pe ## $(*)/' pe$(*).c ; \
+	sed -i 's/SPEN "pe" "N"/SPEN "pe" "$(*)"/' pe$(*).c ; \
+	sed -i 's/Proj. Euler problem #PEN/Proj. Euler problem #$(*)/' pe$(*).c ; \
+	sed -i 's/PEN(/pe$(*)(/' pe$(*).c ; \
+	sed -i '/CODE20190817233256/,+1 d' pe$(*).c ; \
+	echo "Created ....... : pe$(*).c" ; \
+	echo "Compile with .. : make pe$(*).x SRC=\"projecteuler.c myeulerlib.c\"" ; \
+	fi
 	@echo '................: Good luck!'
 
 #* ------------------------------------------------------------------- *

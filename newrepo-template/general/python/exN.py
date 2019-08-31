@@ -15,6 +15,6 @@ if __name__ == "__main__":
 
 #/* ------------------------------------------------------------------------ */
 #/* Python config for Vim modeline                                           */
-#/* vi: set ai sta et ts=8 sts=4 sw=4 tw=79 wm=0 cc=+1 lbr fo=croq :         */
+#/* vi: set ai sta et ts=8 sts=4 sw=4 tw=0 wm=0 lbr fo=croql :               */
 #/* Template by Dr. Beco <rcb at beco dot cc>        Version 20170724.161751 */
 
