@@ -91,7 +91,7 @@ main()
     verbose=0
     faculty=0
     general=0
-    token=""
+    tokenarg=""
     #getopt example with switch/case
     while getopts "hVvfgr:u:t:" FLAG; do
         case "${FLAG}" in
@@ -117,7 +117,7 @@ main()
                 user="${OPTARG}"
                 ;;
             t)
-                token="${OPTARG}"
+                tokenarg="${OPTARG}"
                 ;;
             *)
                 Help
@@ -152,14 +152,16 @@ main()
     fi
   
     # Token from file or command line
+    olddir=`pwd`
+    cd ${dirroot}
     tokenfile=""
-    if [ -z "$token" ]; then
+    if [ -z "$tokenarg" ]; then
         if [ -f ./AUTHTOKEN ]; then
             tokenfile="./AUTHTOKEN"
         fi  
     else
-        if [ -f "$token" ]; then
-            tokenfile="$token"
+        if [ -f "$tokenarg" ]; then
+            tokenfile="$tokenarg"
         fi  
     fi  
     if [ -n "$tokenfile" ]; then
@@ -168,15 +170,16 @@ main()
             echo "Using token file $tokenfile"
         fi  
     else
-        tok="$token"
+        tok="$tokenarg"
         if [ "$verbose" -gt 1 ]; then
-            echo "Using token $token"
+            echo "Using token $tok"
         fi  
     fi  
 
     # ------------------------------------------------------------
 
     echo "Creating folder $repo"
+    cd $olddir
     mkdir "$repo"
     cd "$repo"
 
@@ -184,7 +187,7 @@ main()
     git init
 
     echo 'Copying files: AUTHORS, LICENSE, README.md and makefile'
-    cp -- "$srcfrom/"* . 2>&1 > /dev/null
+    cp -- "$srcfrom/"* . > /dev/null 2>&1 
 
     echo 'Copying exN.c, exN.h and .gitignore'
     cp -- "$srcfrom/c/"* .

@@ -134,7 +134,7 @@ int foonc(int is_bar[MAX], int x)
 {
     int p; /* a really though condition */
     
-    p = !(is_bar[0] || isBar[1]);
+    p = !(is_bar[0] || is_bar[1]);
 
     if(is_bar[x] == 2 && !p)
     {
@@ -276,18 +276,19 @@ O exemplo abaixo mostra somente os campos _obrigatórios_, e descreve hipotétic
 
 * Variáveis com letras maiúsculas somente se:
     - São PROLOG, claro ;)
-    - São MACROS (logo não são _variáveis_) em C (exemplo: `#define CINCO 1`)
+    - São MACROS (logo não são _variáveis_) em C (exemplo: `#define CINCO 5`)
     - São _MUIIIITO_ importantes e precisam de algum destaque. Não tente usar assim, pois você provavelmente não vai convencer ninguém. ;)
 * Use nomes claros para as variáveis
 * O nome da variável deve indicar sua _intenção_, i.é., o dado que ela carrega.
 * Prefira nomes que demonstrem o conceito geral do domínio, ao invés dos padrões que eles implementam.
 * Não faça nomes gigantes. Um tamanho _máximo_ que já não fica tão bom é até 15 caracteres. Tente nomes menores, até 10 no pior caso.
+* Use o estilo _snake_, ou seja, as variáveis, caso precisem de nome composto, são criadas todas em minúsculas e com um sublinhado separando-os. Exemplo `taxa_anual`. Não use o estilo camelo (ex. `taxaAnual`) e muito menos misture estilos.
 * Use sublinhados para _sufixos_ apenas se for criar variáveis que tenham alguma característica em comum. Exemplo: `salario_antes` e `salario_depois`. Se existirem muitas características em comum em um tipo de dados, considere agrupar com _struct_
 * Não coloque o _tipo_ no nome da variável. Exemplo: `vetor_de_alunos`.
-* Coloque `t_` no início de _typedef_. Exemplo: `typedef int t_meuint;`
+* Coloque `_t` no fim de _typedef_. Exemplo: `typedef int meuint_t;`
 * Coloque `st_` no início de _structs_. Exemplo: `struct st_concreto { ... };`
 * Coloque `s` no início de variáveis _string_. Exemplo: `char snome[MAX];`
-* Coloque `p` no início de ponteiros. Exemplo: `t_carro *pcarro;` ou `char *pnome;`.
+* Coloque `p` no início de ponteiros. Exemplo: `carro_t *pcarro;` ou `char *pnome;`.
 * Nomeie uma _enum_ (enumeração) pelo substantivo comum do objeto que ela enumera.
 
 ### Organização
