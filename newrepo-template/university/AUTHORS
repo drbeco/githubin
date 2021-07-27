@@ -1,13 +1,15 @@
+= Title: titulo do projeto  =
+
 == Authors ==
 
 === Coordinator ===
 
-Prof. Dr. Ruben Carlo Benante, beco, @drbeco
+* Prof. Dr. Ruben Carlo Benante <rcb@upe.br>
 
-=== Group Number: group name ===
+=== Students - Group XX - Group name ===
 
-* Nome do Aluno 1 Completo, hydrauser, @gitlabuser1
-* Nome do Aluno 2 Completo, hydrauser, @gitlabuser2
-* Nome do Aluno 3 Completo, hydrauser, @gitlabuser3
-* Nome do Aluno 4 Completo, hydrauser, @gitlabuser4
+* Nome do Aluno 1 Completo <email@domain.com>
+* Nome do Aluno 2 Completo <email@domain.com>
+* Nome do Aluno 3 Completo <email@domain.com>
+* Nome do Aluno 4 Completo <email@domain.com>
 
