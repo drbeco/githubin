@@ -1,23 +1,4 @@
 #!/bin/bash
-### BEGIN INIT INFO
-# Title: git-repo.sh
-# Provides:
-# Required-Start:
-# Required-Stop:
-# Should-Start:
-# Should-Stop:
-# Default-Start: 2 3 4 5
-# Default-Stop: 0 1 6
-# Short-Description: Creates a git repository
-# Description: More detailed information on how it accomplishs it.
-# License: GNU GENERAL PUBLIC LICENSE Version 2
-# Author: Ruben Carlo Benante <rcb@beco.cc>
-# Date: 2016-09-08
-# Version: 20160908.175403
-# Usage: sh git-repo.sh
-# Notes: Some useful notes that might be relevant goes here
-# bash_version: GNU bash, version 4.2.37(1)-release (x86_64-pc-linux-gnu)
-### END INIT INFO
 
 # **************************************************************************
 # * (C)opyright 2016-2017         by Ruben Carlo Benante                   *
