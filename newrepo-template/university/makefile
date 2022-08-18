@@ -1,6 +1,6 @@
 #***************************************************************************
-#*   Autoversion makefile                  v.20210511.233948    (pdflatex) *
-#*   Copyright (C) 2014-2021 by Ruben Carlo Benante <rcb@beco.cc>          *
+#*   Autoversion makefile                      v.20220803.165613   (lm)    *
+#*   Copyright (C) 2014-2022 by Ruben Carlo Benante <rcb@beco.cc>          *
 #*                                                                         *
 #*   This makefile sets BUILD and allows to set MAJOR.MINOR version,       *
 #*   DEBUG and OBJ to compile a range of different targets                 *
@@ -40,6 +40,8 @@
 # * From linux prompt:
 #    - Normal C program (ex1.c)
 #        $ make ex1.x
+#    - Normal CPP program (ex1.cpp)
+#        $ make ex1.out
 #    - Aspipo program (ex1.c) with object:
 #        $ make ex1.x OBJ=libaspipo-ux64.o
 #    - Multiple objects:
@@ -101,11 +103,13 @@
 #   Clean temporary files *.o and errors.err
 #   	$ make clean
 #
-# * wipe 
+# * wipe
 #	- WARNING!! Clean all created files: *.x *.so *.o errors.err and tags
 # 		$ make wipe
 #
 # Log:
+# 2022-02-12:
+# 		* syntax highlight TAB (set list)
 # 2021-05-11:
 # 		* pdflatex article.tex -o article.pdf
 # 		* bibtex biblio
@@ -133,11 +137,15 @@
 # 		* added _FORTIFY_SOURCE=1 to help catch overflows
 # 2017-03-05:
 # 		* added variable CCCOLOR to work with vi
-# 			- set makeprg=make\ o=%< CCCOLOR=never\ $* 
+# 			- set makeprg=make\ o=%< CCCOLOR=never\ $*
 # 			- set makeprg=make\ %<.x CCCOLOR=never\ $*
 # 			- set makeprg=make\ CCCOLOR=never\ $*
 #		* added CPPFLAGS += -D$(D) so we can pass values to
 #			C-Pre-processor via make prog.x D=VARIABLE=VALUE
+# 2017-03-06:
+# 		* ifeq "$(DEBUG)" "1" to set CFLAGS
+# 		* added _XOPEN_SOURCE=700 to pair with -ansi
+# 		* added _FORTIFY_SOURCE=1 to help catch overflows
 # 2017-03-03:
 # 		* added -fdiagnostics-color=always to colorize tee output
 # 		* added -pg -fprofile-arcs to allow gprof command on debug
@@ -151,7 +159,7 @@ MAKEFLAGS += --no-builtin-rules
 SHELL=/bin/bash -o pipefail
 
 # asure functions that return values are not ignored
-FORTIFY ?= 1
+FORTIFY ?= 0
 # turn on/off debug mode
 DEBUG ?= 1
 # version major number
@@ -175,8 +183,11 @@ BUILD = $(shell date +"%g%m%d.%H%M%S")
 DEFSYM = $(subst .,_,$(BUILD))
 # automatic version number
 VERSION = "\"$(MAJOR).$(MINOR).$(BUILD)\""
+
 # c compiler
 CC = gcc
+# c++ compiler
+PPCC = g++
 # brainforce compiler
 BF = bf
 # gportugol compiler
@@ -185,12 +196,15 @@ PT = gpt
 PLLD = swipl-ld
 # prolog compiler
 PL = swipl
+
 # c flags for the c compiler
 CFLAGS = -Wall -Wextra -std=gnu99 -fdiagnostics-color=$(CCCOLOR)
 #CFLAGS = -Wall -Wextra -g -O0 -std=gnu99 -pg -fprofile-arcs -fdiagnostics-color=$(CCCOLOR)
 ifeq "$(DEBUG)" "0"
 # not a debug, go fast
 CFLAGS += -Ofast
+#not debug, fortify
+FORTIFY = 1
 else ifeq "$(DEBUG)" "1"
 # it is a debug, add symbols and no optimizations
 CFLAGS += -g -O0
@@ -200,14 +214,35 @@ CFLAGS += -g -O0 -pg -fprofile-arcs -ansi -Wpedantic
 endif
 #-pedantic-errors -Werror
 #-Ofast -c
-# pre-processor flags
+
+# PPCFLAGS C++ Flags for the CPP compiler
+PPCFLAGS = -Wall -Wextra -fdiagnostics-color=$(CCCOLOR)
+#CFLAGS = -Wall -Wextra -g -O0 -std=gnu99 -pg -fprofile-arcs -fdiagnostics-color=$(CCCOLOR)
+ifeq "$(DEBUG)" "0"
+# not a debug, go fast
+PPCFLAGS += -Ofast
+#not debug, fortify
+FORTIFY = 1
+else ifeq "$(DEBUG)" "1"
+# it is a debug, add symbols and no optimizations
+PPCFLAGS += -g -O0
+else
+# exaustive debug
+PPCFLAGS += -g -O0
+endif
+
+# c and c++ pre-processor flags
 CPPFLAGS = -DVERSION=$(VERSION) -DBUILD="\"$(BUILD)\"" -DDEBUG=$(DEBUG) -D$(D) -D_FORTIFY_SOURCE=$(FORTIFY)
 ifeq "$(DEBUG)" "2"
 # POSIX extra stuff
 CPPFLAGS += -D_XOPEN_SOURCE=700
 endif
+
 # libraries to link, options to the linker
-LDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl -lgmp
+LDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
+# CPP libraries to link, options to the linker
+PPLDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
+
 # making a shared library
 CCSHARED = -shared -fPIC
 # brainforce options
@@ -236,12 +271,15 @@ ifeq "$(DEBUG)" "2"
 TCPPFLAGS += -D_XOPEN_SOURCE=700
 endif
 # travis for C: libraries to link, options to the linker
-TLDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl -lgmp
+TLDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
 # travis for C: making a shared library
 TCCSHARED = -shared -fPIC
 
 # prevent built-in rules for %.o
 %.o : %.c
+
+# prevent built-in rules for %.o
+%.o : %.cpp
 
 # Programa BrainForce.
 %.bf.x : %.bf
@@ -267,7 +305,7 @@ TCCSHARED = -shared -fPIC
 
 # Shared library
 %.so : %.c $(OBJ) $(SRC)
-	-$(CC) $(CCSHARED) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
+	-$(CC) $(CCSHARED) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS) 2>&1 | tee errors.err
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
 endif
@@ -279,7 +317,7 @@ travis : $(OBJ) $(SRC)
 # Programa em C (incluindo bibliotecas como allegro ou libaspipo).
 # Inclui VERSION, data de BUILD e DEBUG (opcional).
 %.x : %.c $(OBJ) $(SRC)
-	-$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
+	-$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS) 2>&1 | tee errors.err
 	@#@echo $@ version $(VERSION) > VERSION
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
@@ -288,7 +326,17 @@ endif
 
 # override built-in rules for mathing everything (exactly the same rule as %.x above)
 % : %.c $(OBJ) $(SRC)
-	-$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
+	-$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS) 2>&1 | tee errors.err
+	@#@echo $@ version $(VERSION) > VERSION
+ifeq "$(CCCOLOR)" "always"
+	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
+endif
+	-@[ ! -s errors.err ] && echo "$@ version "$(VERSION) > VERSION && cp VERSION BUILD || echo "$@ build "$(VERSION) > BUILD
+
+# Programa em CPP
+# Inclui VERSION, data de BUILD e DEBUG (opcional).
+%.out : %.cpp $(OBJ) $(SRC)
+	-$(PPCC) $(PPCFLAGS) $(CPPFLAGS) $(PPLDLIBS) $^ -o $@ 2>&1 | tee errors.err
 	@#@echo $@ version $(VERSION) > VERSION
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
@@ -364,6 +412,6 @@ pe%.c :
 
 #* ------------------------------------------------------------------- *
 #* makefile config for Vim modeline                                    *
-#* vi: set ai noet ts=4 sw=4 tw=0 wm=0 fo=croqlt :                     *
-#* Template by Dr. Beco <rcb at beco dot cc> Version 20170506.191339   *
+#* vi: set ai noet ts=4 sw=4 tw=0 wm=0 fo=croqlt list :                *
+#* Template by Dr. Beco <rcb at beco dot cc> Version 20220521.001405   *
 
