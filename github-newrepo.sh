@@ -187,13 +187,20 @@ main()
     git add .
     git commit -m "First commit: imported by ${0} using ${srcfrom}"
 
+    baseurl='https://api.github.com/'
     echo "Creating remote repository at Github $user/$repo.git"
     if [ "$user" == "drbeco" ]; then
-        echo User
-        curl -u "${user}:${tok}" https://api.github.com/user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
+        echo User $user
+        exturl='user/repos'
+        totalurl=${baseurl}${exturl}
+        # curl -u "${user}:${tok}" https://api.github.com/user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
+        curl -H "Authorization: token ${tok}" -d "{\"name\":\"$repo\", \"private\":\"true\"}" ${totalurl} # 2>&1 | grep "full_name"
     else
-        echo Organization
-        curl -u "${user}:${tok}" https://api.github.com/orgs/$user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
+        echo Organization $user
+        exturl="${user}/repos"
+        totalurl=${baseurl}${exturl}
+        # curl -u "${user}:${tok}" https://api.github.com/orgs/$user/repos -d "{\"name\":\"$repo\", \"private\":\"true\"}" 2>&1 | grep "full_name"
+        curl -H "Authorization: token ${tok}" -d "{\"name\":\"$repo\", \"private\":\"true\"}" ${totalurl} # 2>&1 | grep "full_name"
     fi
 
     created=$?
