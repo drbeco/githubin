@@ -1,5 +1,5 @@
 #***************************************************************************
-#*   Autoversion makefile                      v.20220803.165613   (lm)    *
+#*   Autoversion makefile                   v.20221020.154500 (noasneeded) *
 #*   Copyright (C) 2014-2022 by Ruben Carlo Benante <rcb@beco.cc>          *
 #*                                                                         *
 #*   This makefile sets BUILD and allows to set MAJOR.MINOR version,       *
@@ -38,76 +38,79 @@
 # Examples:
 #
 # * From linux prompt:
-#    - Normal C program (ex1.c)
-#        $ make ex1.x
-#    - Normal CPP program (ex1.cpp)
-#        $ make ex1.out
-#    - Aspipo program (ex1.c) with object:
-#        $ make ex1.x OBJ=libaspipo-ux64.o
-#    - Multiple objects:
-#        $ make ex1.x OBJ="mylib1.o mylib2.o"
-#    - Multiple sources to generate a single binary ex1.x:
-#    	 $ make ex1.x SRC="mysrc1.c mysrc2.c"
-#	 - Normal C program (ex2.c) version 2.3, no debug
-#	 	 $ make ex2.x MAJOR=2 MINOR=3 DEBUG=0
-#	 - Travis test
-#	 	 $ make -e travis SCR=mysrc.c
-#	 - Brainforce:
-#	     $ make ex1.bf.x
-#	 - Portugol:
-#	 	 $ make ex1.gpt.x
-#	 	 creates ex1.gpt.c and ex1.gpt.x
-#	 - Project Euler:
-#	     + Create a new template, say, number pe42.c:
-#	         $ make pe42.c
-#	     + Compile pe42.c with:
-#		     $ make pe42.x SRC="projecteuler.c myeulerlib.c"
-# 	 - LaTeX
-# 	     + Create an article.tex and a biblio.bib
-# 	         $ make article.tex BIB="biblio"
+#	- Normal C program (ex1.c)
+#		$ make ex1.x
+#	- Normal CPP program (ex1.cpp)
+#		$ make ex1.out
+#	- Aspipo program (ex1.c) with object:
+#		$ make ex1.x OBJ=libaspipo-ux64.o
+#	- Multiple objects:
+#		$ make ex1.x OBJ="mylib1.o mylib2.o"
+#	- Multiple sources to generate a single binary ex1.x:
+#		$ make ex1.x SRC="mysrc1.c mysrc2.c"
+#	- Normal C program (ex2.c) version 2.3, no debug
+#		$ make ex2.x MAJOR=2 MINOR=3 DEBUG=0
+#	- Travis test
+#		$ make -e travis SCR=mysrc.c
+#	- Brainforce:
+#		$ make ex1.bf.x
+#	- Portugol:
+#		+ Creates ex1.gpt.c and ex1.gpt.x
+#			$ make ex1.gpt.x
+#	- Project Euler:
+#		+ Create a new template, say, number pe42.c:
+#			$ make pe42.c
+#		+ Compile pe42.c with:
+#			$ make pe42.x SRC="projecteuler.c myeulerlib.c"
+#	- LaTeX
+#		+ Create an article.tex and a biblio.bib
+#			$ make article.tex BIB="biblio"
 #
 # * Directly from vim editor command line:
-#    - Normal C program (ex1.c)
-#        :make ex1.x
-#    - Aspipo program (ex1.c)
-#        :make ex1.x OBJ=libaspipo-ux64.o
+#	- Normal C program (ex1.c)
+#		:make ex1.x
+#	- Aspipo program (ex1.c)
+#		:make ex1.x OBJ=libaspipo-ux64.o
 #
 # * Copy from 'rascunhos' to 'trabalhos'
-# 	- $ make copy PRG=ex1
-# 	It will try to copy every file matching patterns:
+#	- $ make copy PRG=ex1
+#	It will try to copy every file matching patterns:
 #		cp ex1.c 		# c source code
 #		cp ex1.h 		# c library source code
-# 		cp ex1.x 		# binary from c source code
-# 		cp ex1.gpt 		# portugol source code
-# 		cp ex1.gpt.c	# portugol translated to C source code
-# 		cp ex1.gpt.x 	# binary from portugol source code
-# 		cp ex1.bf 		# brainforce source code
-# 		cp ex1.bf.x 	# binary from brainforce source code
-# 		cp ex1.cpl.x 	# binary from c code with some prolog predicates linked to it
-# 		cp ex1.pl 		# prolog source code
-# 		cp ex1.pl.x 	# binary from prolog source code
-# 		cp ex1.so 		# shared library object from c source code
-# 		cp ex1.pl.so 	# c library object with some functions that may be called by a prolog program
-# 	to the '../trabalhos' folder
+#		cp ex1.x 		# binary from c source code
+#		cp ex1.gpt 		# portugol source code
+#		cp ex1.gpt.c	# portugol translated to C source code
+#		cp ex1.gpt.x 	# binary from portugol source code
+#		cp ex1.bf 		# brainforce source code
+#		cp ex1.bf.x 	# binary from brainforce source code
+#		cp ex1.cpl.x 	# binary from c code with some prolog predicates linked to it
+#		cp ex1.pl 		# prolog source code
+#		cp ex1.pl.x 	# binary from prolog source code
+#		cp ex1.so 		# shared library object from c source code
+#		cp ex1.pl.so 	# c library object with some functions that may be called by a prolog program to the '../trabalhos' folder
 #
 # * CTAGS
-# 	 - Generate a 'tags' index file with all tags in all C source codes
-# 	 	$ make tags
-# 	 - Use with vi:
-# 	 	:make tags
-# 	 	- To find a function or other tag, use $ vim -t tag
-# 	 	- Inside vi, use :ta tag
-#
+#	- Generate a 'tags' index file with all tags in all C source codes
+#		$ make tags
+#	- Use with vi:
+#		:make tags
+#	- To find a function or other tag, use $ vim -t tag
+#	- Inside vi, use :ta tag
 #
 # * clean
-#   Clean temporary files *.o and errors.err
-#   	$ make clean
+#	Clean temporary files *.o and errors.err
+#		$ make clean
 #
 # * wipe
 #	- WARNING!! Clean all created files: *.x *.so *.o errors.err and tags
-# 		$ make wipe
+#		$ make wipe
 #
 # Log:
+# 2022-10-20:
+# 		* -Wl,-no-as-needed : gcc command cite libraries in any order
+# 		* -Wno-unused : stop complaining about unused return from scanf and alike
+# 2022-09-15:
+# 		* Allegro in LDLIBS `allegro-config --cflags --libs`
 # 2022-02-12:
 # 		* syntax highlight TAB (set list)
 # 2021-05-11:
@@ -149,6 +152,9 @@
 # 2017-03-03:
 # 		* added -fdiagnostics-color=always to colorize tee output
 # 		* added -pg -fprofile-arcs to allow gprof command on debug
+#
+# TODO:
+#		* Compile QT5
 
 # disable builtin rules with MAKEFLAGS and .SUFFIXES
 MAKEFLAGS += --no-builtin-rules
@@ -198,7 +204,7 @@ PLLD = swipl-ld
 PL = swipl
 
 # c flags for the c compiler
-CFLAGS = -Wall -Wextra -std=gnu99 -fdiagnostics-color=$(CCCOLOR)
+CFLAGS = -Wall -Wextra -Wno-unused-result -std=gnu99 -fdiagnostics-color=$(CCCOLOR)
 #CFLAGS = -Wall -Wextra -g -O0 -std=gnu99 -pg -fprofile-arcs -fdiagnostics-color=$(CCCOLOR)
 ifeq "$(DEBUG)" "0"
 # not a debug, go fast
@@ -238,10 +244,10 @@ ifeq "$(DEBUG)" "2"
 CPPFLAGS += -D_XOPEN_SOURCE=700
 endif
 
-# libraries to link, options to the linker
-LDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
+# libraries to link, options to the linker, including allegro. no-as-needed: any order is fine
+LDLIBS = -Wl,-no-as-needed -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl `allegro-config --cflags --libs`
 # CPP libraries to link, options to the linker
-PPLDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
+PPLDLIBS = -Wl,-no-as-needed -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
 
 # making a shared library
 CCSHARED = -shared -fPIC
@@ -271,7 +277,7 @@ ifeq "$(DEBUG)" "2"
 TCPPFLAGS += -D_XOPEN_SOURCE=700
 endif
 # travis for C: libraries to link, options to the linker
-TLDLIBS = -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
+TLDLIBS = -Wl,-no-as-needed -Wl,--defsym,BUILD_$(DEFSYM)=0 -lm -lpthread -lncurses -lcurl
 # travis for C: making a shared library
 TCCSHARED = -shared -fPIC
 
@@ -305,7 +311,7 @@ TCCSHARED = -shared -fPIC
 
 # Shared library
 %.so : %.c $(OBJ) $(SRC)
-	-$(CC) $(CCSHARED) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS) 2>&1 | tee errors.err
+	-$(CC) $(CCSHARED) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
 endif
@@ -317,7 +323,7 @@ travis : $(OBJ) $(SRC)
 # Programa em C (incluindo bibliotecas como allegro ou libaspipo).
 # Inclui VERSION, data de BUILD e DEBUG (opcional).
 %.x : %.c $(OBJ) $(SRC)
-	-$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS) 2>&1 | tee errors.err
+	-$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
 	@#@echo $@ version $(VERSION) > VERSION
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
@@ -326,7 +332,7 @@ endif
 
 # override built-in rules for mathing everything (exactly the same rule as %.x above)
 % : %.c $(OBJ) $(SRC)
-	-$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS) 2>&1 | tee errors.err
+	-$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) $^ -o $@ 2>&1 | tee errors.err
 	@#@echo $@ version $(VERSION) > VERSION
 ifeq "$(CCCOLOR)" "always"
 	@sed -i -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g" errors.err
