@@ -25,17 +25,12 @@ Nós esperamos que todos sigam estas regras em quaisquer projetos no Github do B
 
 Finalmente, não esqueça de que cometer erros é humano! Todos nós cometemos. Vamos trabalhar em conjunto para ajudarmos uns aos outros, resolver nossas diferenças e aprender com os erros que nós vamos inevitavelmente cometer de tempos em tempos.
 
-## Obrigado
-
-Obrigado ao _ThoughtBot Code of Conduct_, _CocoaPods Code of Conduct_, _Blunder Code of Conduct_, _JSConf Code of Conduct_ e _Contributor Covenant_ pela inspiração e ideias.
-
 ## Licença
 
 Dentro da extensão possível da lei, BecoSystem não proclama nenhum copyright ou direitos relacionados ou próximos ao Código de Conduta BecoSystems.
 Este trabalho foi publicado no Brasil.
 
 * [Texto licenciado sob Domínio Público Universal CC0 1.0](http://creativecommons.org/publicdomain/zero/1.0/)
-* [Referência em que este código foi baseado](https://thoughtbot.com/open-source-code-of-conduct)
 
 ![Public Domain](https://i.creativecommons.org/p/zero/1.0/88x31.png)
 
@@ -67,16 +62,11 @@ We expect everyone to follow these rules anywhere in BecoSystems' project codeba
 
 Finally, don't forget that it is human to make mistakes! We all do. Let's work together to help each other, resolve issues, and learn from the mistakes that we will all inevitably make from time to time.
 
-## Thanks
-
-Thanks to the ThoughBot Code of Conduct, CocoaPods Code of Conduct, Bundler Code of Conduct, JSConf Code of Conduct, and Contributor Covenant for inspiration and ideas.
-
 ## License
 
 To the extent possible under law, the BecoSystems team has waived all copyright and related or neighboring rights to BecoSystems Code of Conduct. This work is published from Brazil. 
 
 * [Text Published as Public Domain License CC0 1.0 Universal](http://creativecommons.org/publicdomain/zero/1.0/)
-* [Original text reference](https://thoughtbot.com/open-source-code-of-conduct)
 
 ![Public Domain](https://i.creativecommons.org/p/zero/1.0/88x31.png)
 

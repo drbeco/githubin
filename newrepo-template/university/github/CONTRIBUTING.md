@@ -8,15 +8,15 @@ Para que suas contribuições sejam maximizadas (o que impacta positivamente sua
 
 Tenha certeza de que sua conta está devidamente configurada. Cheque os seguintes itens:
 
-* Cadastre-se no servidor Hydra
+* Cadastre-se no servidor Draco
 * Cadastre-se no Dropbox
 * Cadastre-se no grupo por email Contauto (google groups, prefira gmail)
 * Cadastre-se no GitHub
-* Baixe para seu computador/notebook os textos do Hydrabox (Dropbox)
+* Baixe para seu computador/notebook os textos do hydrabox (Dropbox)
     - Leia-os atentamente. Lá as explicações são muito mais detalhadas que as que você lerá neste pequeno guia
-* No Hydra, crie uma chave SSH
+* No Draco, crie uma chave SSH
 * Adicione sua chave SSH pública para login no Github
-* Nas configurações do git no Hydra, confira seu nome completo e email (o mesmo que usou para se cadastrar no GitHub)
+* Nas configurações do git no Draco, confira seu nome completo e email (o mesmo que usou para se cadastrar no GitHub)
 * Nas configurações do GitHub:
     - coloque seu nome completo no perfil
     - habilite mostrar suas contribuições privadas nas estatísticas
@@ -32,15 +32,15 @@ Os trabalhos podem ser em grupos ou individuais, com ou sem repositório _upstre
 
 * O professor enviará um email com o link para o cadastro do grupo e o repositório será criado automaticamente para cada grupo.
 * Não tem _upstream_.
-* Todos devem fazer o clone do repositório no Hydra.
-* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Hydra.
+* Todos devem fazer o clone do repositório no Draco.
+* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Draco.
 
 ## Trabalhos em grupos criados manualmente (BecoSystems)
 
 * Os alunos se dividem em grupos e um representante cria o repositório e adiciona todos os outros como colaboradores.
 * Não tem _upstream_.
-* Todos devem fazer o clone do repositório no Hydra.
-* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Hydra.
+* Todos devem fazer o clone do repositório no Draco.
+* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Draco.
 
 ## Trabalhos em grupo com _upstream_
 
@@ -51,16 +51,16 @@ Os trabalhos podem ser em grupos ou individuais, com ou sem repositório _upstre
 * Os _issues_ no _upstream_ são usados para comunicar com todos os times e tratar de problemas que envolvem todos globalmente (como API por exemplo).
 * Os _issues_ no _origin_ (repositório do _fork_ feito por cada time) são usados para comunicação interna do time, para tratar problemas locais.
 * O código vai sendo colaborativamente adicionado no _upstream_ pelo professor, conforme cada aluno faz um _pull request_
-* Todos devem fazer o clone do repositório no Hydra.
-* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Hydra.
+* Todos devem fazer o clone do repositório no Draco.
+* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Draco.
 
 ## Trabalhos individuais com _upstream_
 
 * O professor cria o repositório _upstream_ e adiciona os colaboradores com permissão de apenas leitura.
 * Cada aluno faz seu _fork_ e trabalha de forma individual. 
 * O código vai sendo colaborativamente adicionado no _upstream_ pelo professor, conforme cada aluno faz um _pull request_
-* Todos devem fazer o clone do repositório no Hydra.
-* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Hydra.
+* Todos devem fazer o clone do repositório no Draco.
+* Ao final, faça também um clone (ou copie a pasta clonada em _rascunhos_) na pasta _trabalhos_ no Draco.
 
 # Antes de mais nada!
 
@@ -79,7 +79,7 @@ Felizmente existe um excelente arquivo em _PDF_ na pasta hydrabox com explicaç�
 
 Tenha certeza de seguir estas recomendações para ter um maior aproveitamento:
 
-* Se possível, faça login todo dia no Hydra
+* Se possível, faça login todo dia no Draco
 * Os comandos lá digitados são registrados e contam para sua atividade
 * Leia o arquivo sobre Linux no hydrabox
 * Configure sua conta, ajuste seu arquivo _.project_ com seus hobbies, faça bom uso de toda a ferramenta, explore, aprenda.
@@ -321,9 +321,9 @@ A ordem que o esqueleto do programa deve ter é como segue:
 # Ciclo de trabalho
 
 * Ligou o computador, **primeira** vez neste repositório
-    - Tudo configurado no GitHub e no Hydra?
+    - Tudo configurado no GitHub e no Draco?
     - Repositório criado no GitHub (seu ou com _fork_ conforme o caso)
-    - Faça o _clone_ no Hydra
+    - Faça o _clone_ no Draco
     - Crie seu ramo _feature-nome_
     - Crie o esqueleto do codigo (exemplo _ex11.c_)
     - Adicione (_git add_) o fonte criado
